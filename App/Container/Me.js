@@ -8,53 +8,46 @@
 * */
 
 import React from 'react'
-import {Text, View, Image} from "react-native";
 import MainView from '../Components/MainView'
-import ListItem3 from '../Components/ListItem3'
 import getStyle from './Style/MeStyle';
-import AntDesign from "react-native-vector-icons/AntDesign";
-import Ionicons from "react-native-vector-icons/Ionicons";
-
+import { ListItem } from 'react-native-elements'
+import Feather from "react-native-vector-icons/Feather";
+import {TouchableOpacity} from "react-native";
 let Styles = {};
+
 class Me extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     Styles = getStyle();
     return (
       <MainView>
-        <View>
-          <View style={Styles.headerTop}>
-            <AntDesign name={'camera'} color={'black'} size={20} />
-          </View>
-          <View style={Styles.headerContainer}>
-            <Image
-             source={{uri:'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3141084194,3792573507&fm=26&gp=0.jpg'}}
-             style={Styles.image}
+        <ListItem
+          leftAvatar={{ source: { uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg'} }}
+          title={"一天前"}
+          subtitle={"微信号: ofdofsjodfjowefiwo"}
+          chevron
+          containerStyle={{paddingVertical: 30, paddingHorizontal: 30}}
+          onPress={()=>{
+            this.props.navigation.navigate('UserView');
+          }}
+        />
+        <ListItem
+          leftIcon={
+            <Feather name={'settings'} size={20} color={'black'}
             >
-
-            </Image>
-            <View style={Styles.rightContainer}>
-              <View>
-                <Text>名字</Text>
-              </View>
-              <View style={Styles.rightBottom}>
-                <Text>微信号: 1883323sdsadsa</Text>
-                <View style={{flexDirection: 'row'}}>
-                  <AntDesign name={'qrcode'} color={'blue'} size={15} />
-                  <View style={{width: 10}}></View>
-                  <Ionicons name={'ios-arrow-forward'} color={'black'} size={15}/>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-        <View>
-          <ListItem3 name={'md-today'} text={'支付'}></ListItem3>
-          <ListItem3 name={'ios-share'} text={'收藏'}></ListItem3>
-          <ListItem3 name={'md-aperture'} text={'相册'}></ListItem3>
-          <ListItem3 name={'ios-cart'} text={'卡包'}></ListItem3>
-          <ListItem3 name={'md-today'} text={'表情'}></ListItem3>
-          <ListItem3 name={'ios-settings'} text={'设置'}></ListItem3>
-        </View>
+            </Feather>
+          }
+          title={"设置"}
+          bottomDivider
+          chevron
+          onPress={()=>{
+            this.props.navigation.navigate('SettingView');
+          }}
+          containerStyle={{marginTop: 10}}
+        />
       </MainView>
     );
   }

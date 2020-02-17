@@ -8,14 +8,10 @@
 * 修改内容:
 * */
 
-import AppColor from "../../Util/AppColor";
-import AppSize from '../../Util/AppSize';
 
 export default getStyle = function () {
 
   return {
-    container:{
-      backgroundColor: AppColor.NavBgColor,
-    },
+
   }
 }

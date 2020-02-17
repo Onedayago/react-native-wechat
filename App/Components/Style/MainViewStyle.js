@@ -1,12 +1,10 @@
 
-import AppColor from '../../Util/AppColor'
-
 export default getStyle = function () {
 
   return {
     container:{
       flex: 1,
-      backgroundColor: AppColor.MainBgColor
+      backgroundColor: 'rgb(238, 238, 238)'
     },
   }
 
