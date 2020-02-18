@@ -38,7 +38,7 @@
 6.  发送图片
 #### 效果展示
 
-![登录](https://images.gitee.com/uploads/images/2020/0218/114550_fe312c7e_2093191.png?width=10&height=100 "屏幕快照 2020-02-18 上午11.45.34.png ")
+![登录](https://images.gitee.com/uploads/images/2020/0218/114550_fe312c7e_2093191.png "屏幕快照 2020-02-18 上午11.45.34.png ")
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0218/114655_638c5cdb_2093191.png "屏幕快照 2020-02-18 上午11.46.43.png")
 
