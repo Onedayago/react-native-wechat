@@ -3,20 +3,30 @@
 #### 介绍
 使用 React Native 开发的仿微信 App
 
-#### 软件架构
-使用 React Native 和 Socket.io 
+#### 技术栈
+1. React-Native
+2. Socket.io
+3. react-native-elements
+4. react-navigation
+5. redux-thunk
+6. react-redux
 
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  git clone https://gitee.com/icfyl/ReactNative-Weixin.git
+2.  cd ReactNative-Weixin
+3.  yarn install
+4.  使用 xcode 打开 ios 工程，然后运行
 
-#### 使用说明
+#### 已完成的功能
 
-1.  xxxx
-2.  xxxx
+1.  登录
+    ![登录](https://images.gitee.com/uploads/images/2020/0218/114550_fe312c7e_2093191.png "屏幕快照 2020-02-18 上午11.45.34.png")
+2.  注册
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0218/114655_638c5cdb_2093191.png "屏幕快照 2020-02-18 上午11.46.43.png")
+2.  通讯录
+![通讯录](https://images.gitee.com/uploads/images/2020/0218/114432_533315ef_2093191.png "屏幕快照 2020-02-18 上午11.43.33.png")
 3.  xxxx
 
 #### 参与贡献
