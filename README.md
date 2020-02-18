@@ -21,6 +21,7 @@
 2.  cd ReactNative-Weixin
 3.  yarn install
 4.  使用 xcode 打开 ios 工程，然后运行
+5. 目前还未开始调试 android 端
 
 #### 已完成的功能
 
