@@ -14,8 +14,7 @@
 8. axios
 
 #### 后台链接
-[输入链接说明](http://https://gitee.com/icfyl/ChatServe.git)
-
+[后台地址](https://gitee.com/icfyl/ChatServe)
 #### 安装教程
 
 1.  git clone https://gitee.com/icfyl/ReactNative-Weixin.git
