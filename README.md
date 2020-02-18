@@ -10,6 +10,10 @@
 4. react-navigation
 5. redux-thunk
 6. react-redux
+7. aurora-imui-react-native
+8. axios
+
+#### 后台链接
 
 
 #### 安装教程
@@ -22,13 +26,24 @@
 #### 已完成的功能
 
 1.  登录
-    ![登录](https://images.gitee.com/uploads/images/2020/0218/114550_fe312c7e_2093191.png "屏幕快照 2020-02-18 上午11.45.34.png")
 2.  注册
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0218/114655_638c5cdb_2093191.png "屏幕快照 2020-02-18 上午11.46.43.png")
-2.  通讯录
-![通讯录](https://images.gitee.com/uploads/images/2020/0218/114432_533315ef_2093191.png "屏幕快照 2020-02-18 上午11.43.33.png")
-3.  xxxx
+3.  通讯录
+4.  两人文字聊天
+#### 正在开发的功能
+1.  朋友圈
+2.  多人聊天
+3.  用户管理
+4.  系统设置
+5.  语音聊天
+6.  发送图片
+#### 效果展示
+    ![登录](https://images.gitee.com/uploads/images/2020/0218/114550_fe312c7e_2093191.png "屏幕快照 2020-02-18 上午11.45.34.png")
 
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0218/114655_638c5cdb_2093191.png "屏幕快照 2020-02-18 上午11.46.43.png")
+
+![通讯录](https://images.gitee.com/uploads/images/2020/0218/114432_533315ef_2093191.png "屏幕快照 2020-02-18 上午11.43.33.png")
+
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0218/115152_ef5d2c96_2093191.png "屏幕快照 2020-02-18 上午11.51.06.png")
 #### 参与贡献
 
 1.  Fork 本仓库
