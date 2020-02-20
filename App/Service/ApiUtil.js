@@ -18,7 +18,7 @@ class ApiUtil {
           key: 'accessToken',
           syncInBackground: false
         }).then(access_token => {
-          console.tron.log(`read access_token:${access_token}`)
+          // console.tron.log(`read access_token:${access_token}`)
           Api.setToken(access_token)
           resolve("success")
         });

@@ -13,4 +13,6 @@ export default {
   AddLastMessage: 'AddLastMessage',
   AddUnReadMessage: 'AddUnReadMessage',
   DeleteUnReadMessage: 'DeleteUnReadMessage',
+  ChangeShowButton: 'ChangeShowButton',
+  ChangeShowInput: 'ChangeShowInput'
 }

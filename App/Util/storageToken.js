@@ -15,8 +15,6 @@ export const storage = new Storage({
           key: 'refreshToken',
         })
 
-        console.tron.log(refresh_token)
-
         const result = await ApiUtil.request('refreshToken',refresh_token)
 
         const {access_token, access_expire} = result.data.data

@@ -42,6 +42,13 @@ const create = ()=>{
   const getMessageHistory=({roomId, messageId, page})=>instance.get('api/message/getMessageHistory?roomId='+roomId+'&messageId='+messageId+'&page='+page)
   const deleteMessageHistory=(id)=>instance.get('api/message/deleteMessageHistory?roomId='+id)
 
+  const publishArticle=(param)=>instance.post('api/user/publishArticle',{...param})
+  const getArticle=(page)=>instance.get('api/user/getArticle?page='+page)
+
+  const comment=(param)=>instance.post('api/user/comment',{...param})
+  const getComment=(id)=>instance.get('api/user/getComment?articleId='+id)
+
+
   const refreshToken=(refresh_token)=>instance.post('api/user/refreshToken',{refresh_token})
 
   return{
@@ -55,7 +62,11 @@ const create = ()=>{
     getMessageHistory,
     deleteMessageHistory,
     refreshToken,
-    setToken
+    setToken,
+    publishArticle,
+    getArticle,
+    comment,
+    getComment
   }
 }
 

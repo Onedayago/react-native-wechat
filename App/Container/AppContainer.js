@@ -27,6 +27,8 @@ import { Badge } from 'react-native-elements'
 import {View} from "react-native";
 import MailBottom from '../Components/MailBottom'
 import HomeBottom from '../Components/HomeBottom'
+import FriendList from '../View/FriendList'
+import PublishView from '../View/PublishView'
 
 
 const TabNavigator = createBottomTabNavigator({
@@ -132,6 +134,18 @@ const MainNavigator = createStackNavigator({
   },
   UserDetail: {
     screen: UserDetail,
+    navigationOptions: {
+      header: null
+    }
+  },
+  FriendList: {
+    screen: FriendList,
+    navigationOptions: {
+      header: null
+    }
+  },
+  PublishView: {
+    screen: PublishView,
     navigationOptions: {
       header: null
     }

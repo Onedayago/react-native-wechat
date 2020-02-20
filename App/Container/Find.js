@@ -81,6 +81,9 @@ class Find extends React.Component {
               }
               bottomDivider
               chevron
+              onPress={()=>{
+                this.props.navigation.navigate('FriendList')
+              }}
             />
           </View>
         </TouchableWithoutFeedback>

@@ -9,12 +9,13 @@
 
 import React from 'react';
 import MainView from '../Components/MainView';
-import {FlatList, Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
+import {FlatList, SectionList, Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 import {Header, ListItem} from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import DropMenu from "../Components/DropMenu";
 import {connect} from "react-redux";
 import config from '../Config'
+
 
 
 let Styles = {}
@@ -52,21 +53,60 @@ class Mail extends React.Component {
     this.props.navigation.navigate('UserDetail',{...param});
   }
 
+  renderHeader=()=>{
+    return(
+      <View>
+        <ListItem
+          title={'新的朋友'}
+          leftAvatar={{
+            rounded: false,
+            source: { uri: config.baseURL+'/friend.jpg' },
+          }}
+          bottomDivider
+        />
+        <ListItem
+          title={'群聊'}
+          leftAvatar={{
+            rounded: false,
+            source: { uri: config.baseURL+'/friend.jpg' },
+          }}
+          bottomDivider
+        />
+        <ListItem
+          title={'标签'}
+          leftAvatar={{
+            rounded: false,
+            source: { uri: config.baseURL+'/friend.jpg' },
+          }}
+          bottomDivider
+        />
+        <ListItem
+          title={'公众号'}
+          leftAvatar={{
+            rounded: false,
+            source: { uri: config.baseURL+'/friend.jpg' },
+          }}
+          bottomDivider
+        />
+      </View>
+    )
+  }
+
   keyExtractor = (item, index) => index.toString()
 
   renderItem = ({ item }) => {
-    const friend = item.friendId;
     return(
       <TouchableOpacity
         onPress={()=>{
-            this.goChat({'user': friend})
+            this.goChat({'user': item})
           }
         }
       >
         <ListItem
-          title={friend.username}
+          title={item.username}
           leftAvatar={{
-            source: { uri: config.baseURL +'/'+friend.avatar },
+            rounded: false,
+            source: { uri: config.baseURL +'/'+item.avatar },
           }}
           bottomDivider
         />
@@ -75,7 +115,38 @@ class Mail extends React.Component {
 
   }
 
+  renderSectionHeader = (item) => {
+    let title = item.section.title;
+    return (
+      <View style={{height:30, backgroundColor: 'gray', flexDirection:'row', alignItems: 'center', paddingHorizontal: 10}}>
+        <Text>{title}</Text>
+      </View>
+    )
+  };
+
   render() {
+
+    let sectionData = []
+
+    let data = {}
+
+    this.props.friendList.forEach((item, index)=>{
+        if(!data[item.friendId.letter]){
+          data[item.friendId.letter] = []
+          data[item.friendId.letter].push(item.friendId)
+        }else{
+          data[item.friendId.letter].push(item.friendId)
+        }
+    })
+
+    for(let key in data){
+      let obj = {}
+      obj['title'] = key
+      obj['data'] = data[key]
+      sectionData.push(obj)
+    }
+
+
     return (
       <MainView style={{marginTop: 0}}>
         {/*头部*/}
@@ -116,10 +187,13 @@ class Mail extends React.Component {
         </TouchableWithoutFeedback>
 
         {/*通讯列表*/}
-        <FlatList
+        <SectionList
+          ListHeaderComponent={this.renderHeader}
           keyExtractor={this.keyExtractor}
-          data={this.props.friendList}
+          renderSectionHeader={this.renderSectionHeader}
           renderItem={this.renderItem}
+          sections={sectionData}
+          stickySectionHeadersEnabled={false}
           onScroll={()=>{
             if(this.state.show){
               this.setState({
@@ -127,9 +201,7 @@ class Mail extends React.Component {
               })
             }
           }}
-        >
-
-        </FlatList>
+        />
 
         {/*弹窗*/}
         {this.state.show?

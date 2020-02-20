@@ -100,6 +100,20 @@ export function DeleteUnReadMessage(data) {
   }
 }
 
+export function ChangeShowButton(data) {
+  return {
+    type:  actionTypes.ChangeShowButton,
+    data: data
+  }
+}
+
+export function ChangeShowInput(data) {
+  return {
+    type:  actionTypes.ChangeShowInput,
+    data: data
+  }
+}
+
 
 
 

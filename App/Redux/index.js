@@ -8,6 +8,7 @@ import ThemeReducer from './reducer/themeReducer'
 import MessageReducer from './reducer/messageReducer'
 import AsyncStorage from '@react-native-community/async-storage';
 import immutableTransform from "redux-persist-transform-immutable";
+import commentReducer from "./reducer/commentReducer";
 
 const persistConfig = {
   transforms: [
@@ -20,7 +21,8 @@ const persistConfig = {
 const reducer =  combineReducers ({
   UserReducer: UserReducer,
   ThemeReducer: ThemeReducer,
-  MessageReducer: MessageReducer
+  MessageReducer: MessageReducer,
+  CommentReducer: commentReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer)
