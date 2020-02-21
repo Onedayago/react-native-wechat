@@ -8,7 +8,12 @@
 * */
 
 import React from 'react';
-import { createBottomTabNavigator, createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
+import {
+  createBottomTabNavigator,
+  createAppContainer,
+  createStackNavigator,
+  createSwitchNavigator,
+} from 'react-navigation';
 import Home from './Home'
 import Mail from './Mail'
 import Find from './Find'
@@ -23,13 +28,11 @@ import RegisterView from '../View/RegisterView'
 import UserMoreView from '../View/UserMoreView'
 import SettingView from '../View/SettingView'
 import UserDetail from '../View/UserDetail'
-import { Badge } from 'react-native-elements'
 import {View} from "react-native";
 import MailBottom from '../Components/MailBottom'
 import HomeBottom from '../Components/HomeBottom'
 import FriendList from '../View/FriendList'
 import PublishView from '../View/PublishView'
-
 
 const TabNavigator = createBottomTabNavigator({
   Home: {
@@ -165,6 +168,7 @@ const RootNavigator = createSwitchNavigator({
   },
   initialRouteName: 'Main',
 });
+
 
 
 export default createAppContainer(RootNavigator);

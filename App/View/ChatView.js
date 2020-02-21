@@ -23,6 +23,9 @@ import config from '../Config'
 import {sort} from '../Util/Tool'
 import {AddLastMessage, DeleteUnReadMessage} from '../Redux/actionCreators'
 import ApiUtil from '../Service/ApiUtil'
+let RNFS = require('react-native-fs');
+
+
 
 let Styles = {};
 
@@ -52,14 +55,19 @@ class ChatView extends React.Component{
     }
   }
 
-  componentWillReceiveProps(nextProps): void {
-    if(((nextProps.messageList)[this.state.roomId])){
+  async componentWillReceiveProps(nextProps): void {
+    if (((nextProps.messageList)[this.state.roomId])) {
       const mess = ((nextProps.messageList)[this.state.roomId]).pop()
 
-      if(mess.messageId !== lastMessage.messageId){
+      if (mess.messageId !== lastMessage.messageId) {
+
+        lastMessage.type = mess.type
+        lastMessage.text = mess.msg
+        lastMessage.messageId = mess.messageId
+
         let message = [];
         message.push(mess);
-        this.addMessage(message);
+        await this.addMessage(message);
       }
     }
   }
@@ -82,18 +90,28 @@ class ChatView extends React.Component{
     AuroraIController.removeMessageListDidLoadListener(this.messageListDidLoadEvent);
   }
 
-  addMessage=(messList, insert = false)=>{
+  addMessage= async (messList, insert = false) => {
     let message = [];
-    messList.forEach((item, index)=>{
+    for (let i = 0; i < messList.length; i++) {
+
+      let item = messList[i]
       let mess = {}
       mess.msgType = item.type
-      mess.text = item.msg
       mess.msgId = item._id
       mess.status = "send_succeed"
+      if (item.type === 'voice') {
+        await this.downVoice(item.msg)
+        mess.mediaPath = RNFS.DocumentDirectoryPath + '/' + item.msg
+        mess.duration = item.duration
+      } else if (item.type === 'text') {
+        mess.text = item.msg
+      }
 
-      if(this.state.user.id === item.userId){
+      console.tron.log(mess)
+
+      if (this.state.user.id === item.userId) {
         mess.isOutgoing = true
-      }else{
+      } else {
         mess.isOutgoing = false
       }
 
@@ -102,34 +120,37 @@ class ChatView extends React.Component{
       let user = {
         userId: item.userId,
         displayName: item.username,
-        avatarPath: config.baseURL+'/'+item.avatar
+        avatarPath: config.baseURL + '/' + item.avatar
       }
       mess.fromUser = user
 
-      if(firstMessage === -1){
+
+      if (firstMessage === -1) {
         firstMessage = item.messageId
       }
 
-      if(!insert){
-        lastMessage.type=item.type
-        lastMessage.text=item.msg
+      if (!insert) {
+        lastMessage.type = item.type
+        lastMessage.text = item.msg
         lastMessage.messageId = item.messageId
       }
 
       message.push(mess);
-    })
+    }
 
-    if(insert){
+    console.tron.log(message)
+
+    if (insert) {
       AuroraIController.insertMessagesToTop(message.reverse())
-    }else{
+    } else {
       AuroraIController.appendMessages(message)
     }
   }
 
-  messageListDidLoadEvent=()=> {
+  messageListDidLoadEvent= async () => {
     const messageList = (this.props.messageList)[this.state.roomId];
-    if(messageList&&messageList.length !== 0){
-      this.addMessage(messageList)
+    if (messageList && messageList.length !== 0) {
+      await this.addMessage(messageList)
     }
   }
 
@@ -158,23 +179,26 @@ class ChatView extends React.Component{
       toId: toId,
       type: 'text',
       text: text,
-      roomId: this.state.roomId
+      roomId: this.state.roomId,
+      duration: 0
     }
 
     global.io.emit('message',obj,(data)=>{
 
     })
 
+    console.tron.log('text')
+
   }
 
   onPullToRefresh = () => {
     ApiUtil.request('getMessageHistory',{'roomId': this.state.roomId, 'messageId': firstMessage, 'page': this.state.page })
-      .then((result)=>{
-        if(result.data.data.length !== 0){
+      .then(async (result) => {
+        if (result.data.data.length !== 0) {
           this.setState({
             page: ++this.state.page
           })
-          this.addMessage(result.data.data, true)
+          await this.addMessage(result.data.data, true)
         }
       })
   }
@@ -183,33 +207,98 @@ class ChatView extends React.Component{
     console.log("on start record voice")
   }
 
-  onFinishRecordVoice = (mediaPath, duration) => {
+  onFinishRecordVoice = async (mediaPath, duration) => {
 
-    let message = {}
-    message.msgType = "voice"
-    message.mediaPath = mediaPath
-    message.timeString = "safsdfa"
-    message.duration = duration
-    message.msgId = '1'
-    message.status = "send_succeed"
+    const userParm = this.state.user
+    const {toName, toId} = this.state
 
-    let user = {
-      userId: 'd',
-      displayName: 'e',
-      avatarPath: ''
+    const result = await this.uploadVoice(mediaPath)
+
+    const filename = JSON.parse(result.body).filename
+
+    let obj = {
+      fromName: userParm.username,
+      fromId: userParm.id,
+      avatar: userParm.avatar,
+      toName: toName,
+      toId: toId,
+      type: 'voice',
+      text: filename,
+      roomId: this.state.roomId,
+      duration: Math.ceil(duration)
     }
-    message.fromUser = user
 
-    console.tron.log(mediaPath)
+    global.io.emit('message', obj, (data) => {
 
-    AuroraIController.appendMessages([message])
-    console.log("on finish record voice")
+    })
+
+    console.tron.log("on finish record voice")
   }
 
   onCancelRecordVoice = () => {
     console.log("on cancel record voice")
   }
 
+  uploadVoice = async (mediaPath) => {
+
+    let uploadUrl = config.baseURL + '/api/upload/uploadVoice'
+
+    let uploadBegin = (response) => {
+      let jobId = response.jobId;
+      console.tron.log('UPLOAD HAS BEGUN! JobId: ' + jobId);
+    };
+
+    let uploadProgress = (response) => {
+      let percentage = Math.floor((response.totalBytesSent / response.totalBytesExpectedToSend) * 100);
+      console.tron.log('UPLOAD IS ' + percentage + '% DONE!');
+    };
+
+    let files = [
+      {
+        name: 'test1',
+        filename: 'test1.w4a',
+        filepath: mediaPath,
+        filetype: 'audio/x-m4a'
+      }
+    ];
+
+    return await RNFS.uploadFiles({
+      toUrl: uploadUrl,
+      files: files,
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+      },
+      fields: {
+        'hello': 'world',
+      },
+      begin: uploadBegin,
+      progress: uploadProgress
+    }).promise
+
+  }
+
+  downVoice = async (filename) => {
+
+    let downUrl = config.baseURL + '/' + filename
+    console.tron.log(downUrl)
+    const options = {
+      fromUrl: downUrl,
+      toFile: RNFS.DocumentDirectoryPath + '/' + filename,
+      background: true,
+      progressDivider: 5,
+      begin: (res) => {
+        //开始下载时回调
+        console.tron.log('begin', res);
+      },
+      progress: (res) => {
+        //下载过程中回调，根据options中设置progressDivider:5，则在完成5%，10%，15%，...，100%时分别回调一次，共回调20次。
+        console.tron.log('progress', res)
+      }
+    }
+
+    return await RNFS.downloadFile(options).promise
+  }
 
   render(){
     Styles = getStyle()
