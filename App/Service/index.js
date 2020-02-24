@@ -47,6 +47,8 @@ const create = ()=>{
 
   const comment=(param)=>instance.post('api/user/comment',{...param})
   const getComment=(id)=>instance.get('api/user/getComment?articleId='+id)
+  const changeName=(param)=>instance.post('api/user/changeName',{...param})
+  const changeAvatar=(param)=>instance.post('api/user/changeAvatar',{...param})
 
 
   const refreshToken=(refresh_token)=>instance.post('api/user/refreshToken',{refresh_token})
@@ -66,7 +68,9 @@ const create = ()=>{
     publishArticle,
     getArticle,
     comment,
-    getComment
+    getComment,
+    changeAvatar,
+    changeName
   }
 }
 

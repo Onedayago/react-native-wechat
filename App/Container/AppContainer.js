@@ -33,6 +33,7 @@ import MailBottom from '../Components/MailBottom'
 import HomeBottom from '../Components/HomeBottom'
 import FriendList from '../View/FriendList'
 import PublishView from '../View/PublishView'
+import ChangeName from '../View/ChangeName'
 
 const TabNavigator = createBottomTabNavigator({
   Home: {
@@ -149,6 +150,12 @@ const MainNavigator = createStackNavigator({
   },
   PublishView: {
     screen: PublishView,
+    navigationOptions: {
+      header: null
+    }
+  },
+  ChangeName: {
+    screen: ChangeName,
     navigationOptions: {
       header: null
     }

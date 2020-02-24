@@ -19,6 +19,7 @@ import { Input } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Toast from 'react-native-root-toast';
 
+
 let Styles = {};
 const input = React.createRef();
 const msg = {
@@ -67,6 +68,7 @@ class RegisterView extends React.Component{
       return;
     }
 
+
     this.props.register(user)
 
   }
@@ -92,20 +94,19 @@ class RegisterView extends React.Component{
               errorMessage={this.state.nameError}
               leftIconContainerStyle={{marginRight: 10}}
               value={this.state.username}
-              onBlur={()=>{
-                if(!this.state.username){
-                  this.setState({
-                    nameError: msg.nameError
-                  })
-                }else{
-                  this.setState({
-                    nameError: ''
-                  })
-                }
-              }}
               onChangeText={(text)=>{
                 this.setState({
                   username: text
+                },()=>{
+                  if(!this.state.username){
+                    this.setState({
+                      nameError: msg.nameError
+                    })
+                  }else{
+                    this.setState({
+                      nameError: ''
+                    })
+                  }
                 })
               }}
             >
@@ -123,20 +124,19 @@ class RegisterView extends React.Component{
               errorMessage={this.state.passError}
               leftIconContainerStyle={{marginRight: 10}}
               value={this.state.password}
-              onBlur={()=>{
-                if(!this.state.password){
-                  this.setState({
-                    passError: msg.passError
-                  })
-                }else{
-                  this.setState({
-                    passError: ''
-                  })
-                }
-              }}
               onChangeText={(text)=>{
                 this.setState({
                   password: text
+                },()=>{
+                  if(!this.state.password){
+                    this.setState({
+                      passError: msg.passError
+                    })
+                  }else{
+                    this.setState({
+                      passError: ''
+                    })
+                  }
                 })
               }}
             >
@@ -154,20 +154,19 @@ class RegisterView extends React.Component{
               errorMessage={this.state.passConfirmError}
               leftIconContainerStyle={{marginRight: 10}}
               value={this.state.passwordConfirm}
-              onBlur={()=>{
-                if(this.state.passwordConfirm !== this.state.password){
-                  this.setState({
-                    passConfirmError: msg.passConfirmError
-                  })
-                }else{
-                  this.setState({
-                    passConfirmError: ''
-                  })
-                }
-              }}
               onChangeText={(text)=>{
                 this.setState({
                   passwordConfirm: text
+                },()=>{
+                  if(this.state.passwordConfirm !== this.state.password){
+                    this.setState({
+                      passConfirmError: msg.passConfirmError
+                    })
+                  }else{
+                    this.setState({
+                      passConfirmError: ''
+                    })
+                  }
                 })
               }}
             >

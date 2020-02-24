@@ -107,7 +107,6 @@ class ChatView extends React.Component{
         mess.text = item.msg
       }
 
-      console.tron.log(mess)
 
       if (this.state.user.id === item.userId) {
         mess.isOutgoing = true
@@ -138,7 +137,6 @@ class ChatView extends React.Component{
       message.push(mess);
     }
 
-    console.tron.log(message)
 
     if (insert) {
       AuroraIController.insertMessagesToTop(message.reverse())
@@ -187,7 +185,6 @@ class ChatView extends React.Component{
 
     })
 
-    console.tron.log('text')
 
   }
 
@@ -281,7 +278,6 @@ class ChatView extends React.Component{
   downVoice = async (filename) => {
 
     let downUrl = config.baseURL + '/' + filename
-    console.tron.log(downUrl)
     const options = {
       fromUrl: downUrl,
       toFile: RNFS.DocumentDirectoryPath + '/' + filename,

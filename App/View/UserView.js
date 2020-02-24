@@ -15,6 +15,10 @@ import {TouchableOpacity} from 'react-native'
 import ImagePicker from 'react-native-image-crop-picker';
 import {connect} from "react-redux";
 import config from '../Config'
+let RNFS = require('react-native-fs');
+import {UpdateUser} from '../Redux/actionCreators'
+import ApiUtil from '../Service/ApiUtil'
+import Toast from "react-native-root-toast";
 
 class UserView extends React.Component{
   constructor(props) {
@@ -27,9 +31,64 @@ class UserView extends React.Component{
       width: 300,
       height: 400,
       cropping: true
-    }).then(image => {
+    }).then(async image => {
       console.tron.log(image);
+      const result = await this.uploadImage(image.path)
+      const filename = JSON.parse(result.body).filename
+      const userId = this.props.user.id
+      ApiUtil.request('changeAvatar',{
+        userId,
+        'avatar': filename
+      }).then((result)=>{
+        if(result.data.errno === 0){
+          Toast.show(result.data.msg,{
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.CENTER
+          })
+          this.props.updateUser({
+            'key': 'avatar',
+            'value': filename
+          })
+        }
+      })
     });
+  }
+
+  uploadImage= async (mediaPath) => {
+    let uploadUrl = config.baseURL + '/api/upload/uploadImage'
+
+    let uploadBegin = (response) => {
+      let jobId = response.jobId;
+      console.tron.log('UPLOAD HAS BEGUN! JobId: ' + jobId);
+    };
+
+    let uploadProgress = (response) => {
+      let percentage = Math.floor((response.totalBytesSent / response.totalBytesExpectedToSend) * 100);
+      console.tron.log('UPLOAD IS ' + percentage + '% DONE!');
+    };
+
+    let files = [
+      {
+        name: 'test1',
+        filename: 'test1.w4a',
+        filepath: mediaPath,
+        filetype: 'audio/x-m4a'
+      }
+    ];
+
+    return await RNFS.uploadFiles({
+      toUrl: uploadUrl,
+      files: files,
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+      },
+      fields: {
+        'hello': 'world',
+      },
+      begin: uploadBegin,
+      progress: uploadProgress
+    }).promise
   }
 
 
@@ -61,10 +120,13 @@ class UserView extends React.Component{
           onPress={this.uploadAvatar}
         />
         <ListItem
-          title={"昵称"}
-          rightTitle={this.props.user.nickname}
+          title={"用户名"}
+          rightTitle={this.props.user.username}
           bottomDivider
           chevron
+          onPress={()=>{
+            this.props.navigation.navigate('ChangeName')
+          }}
         />
         <ListItem
           title={"微信号"}
@@ -100,7 +162,9 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-
+  updateUser(param){
+    dispatch(UpdateUser(param))
+  }
 })
 
 export default connect(

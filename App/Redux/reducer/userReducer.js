@@ -139,6 +139,13 @@ export default (state = defaultState, action) => {
       return state.merge({
         talkList: fromJS(deleteUnRead)
       })
+
+    case actionTypes.UpdateUser:
+      let user = state.get('user').toJS();
+      user[action.data.key] = action.data.value
+      return state.merge({
+        user: fromJS(user)
+      })
   }
   return state
 }

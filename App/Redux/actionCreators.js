@@ -114,6 +114,13 @@ export function ChangeShowInput(data) {
   }
 }
 
+export function UpdateUser(data) {
+  return {
+    type:  actionTypes.UpdateUser,
+    data: data
+  }
+}
+
 
 
 

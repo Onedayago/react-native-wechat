@@ -89,20 +89,19 @@ class LoginView extends React.Component{
                 errorMessage={this.state.nameError}
                 leftIconContainerStyle={{marginRight: 10}}
                 value={this.state.username}
-                onBlur={()=>{
-                  if(!this.state.username){
-                    this.setState({
-                      nameError: msg.nameError
-                    })
-                  }else{
-                    this.setState({
-                      nameError: ''
-                    })
-                  }
-                }}
                 onChangeText={(text)=>{
                   this.setState({
                     username: text
+                  },()=>{
+                    if(!this.state.username){
+                      this.setState({
+                        nameError: msg.nameError
+                      })
+                    }else{
+                      this.setState({
+                        nameError: ''
+                      })
+                    }
                   })
                 }}
               >
@@ -120,20 +119,19 @@ class LoginView extends React.Component{
                 errorMessage={this.state.passError}
                 leftIconContainerStyle={{marginRight: 10}}
                 value={this.state.password}
-                onBlur={()=>{
-                  if(!this.state.password){
-                    this.setState({
-                      passError: msg.passError
-                    })
-                  }else{
-                    this.setState({
-                      passError: ''
-                    })
-                  }
-                }}
                 onChangeText={(text)=>{
                   this.setState({
                     password: text
+                  },()=>{
+                    if(!this.state.password){
+                      this.setState({
+                        passError: msg.passError
+                      })
+                    }else{
+                      this.setState({
+                        passError: ''
+                      })
+                    }
                   })
                 }}
               >
