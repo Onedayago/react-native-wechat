@@ -13,6 +13,8 @@ import getStyle from './Style/MeStyle';
 import { ListItem } from 'react-native-elements'
 import Feather from "react-native-vector-icons/Feather";
 import {TouchableOpacity} from "react-native";
+import {connect} from "react-redux";
+import config from '../Config'
 let Styles = {};
 
 class Me extends React.Component {
@@ -25,8 +27,8 @@ class Me extends React.Component {
     return (
       <MainView>
         <ListItem
-          leftAvatar={{ source: { uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg'} }}
-          title={"一天前"}
+          leftAvatar={{ source: { uri: config.baseURL +'/'+ this.props.user.avatar} }}
+          title={this.props.user.username}
           subtitle={"微信号: ofdofsjodfjowefiwo"}
           chevron
           containerStyle={{paddingVertical: 30, paddingHorizontal: 30}}
@@ -54,4 +56,17 @@ class Me extends React.Component {
 }
 
 
-export default Me;
+
+const mapState = state => ({
+  user: state.UserReducer.get('user').toJS(),
+})
+
+const mapDispatch = dispatch => ({
+
+})
+
+export default connect(
+  mapState,
+  mapDispatch
+)(Me)
+

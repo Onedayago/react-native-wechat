@@ -14,6 +14,9 @@ import {Header, ListItem} from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import DropMenu from "../Components/DropMenu";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import {getFriendList} from "../Service/action";
+import {DeleteTalkList} from "../Redux/actionCreators";
+import {connect} from "react-redux";
 
 let Styles = {};
 class Find extends React.Component {
@@ -101,4 +104,15 @@ class Find extends React.Component {
   }
 }
 
-export default Find;
+const mapState = state => ({
+  user: state.UserReducer.get('user').toJS(),
+})
+
+const mapDispatch = dispatch => ({
+
+})
+
+export default connect(
+  mapState,
+  mapDispatch
+)(Find)
