@@ -50,6 +50,11 @@ const create = ()=>{
   const changeName=(param)=>instance.post('api/user/changeName',{...param})
   const changeAvatar=(param)=>instance.post('api/user/changeAvatar',{...param})
 
+  const thumbUp=(param)=>instance.post('api/user/thumbUp',{...param})
+  const isThumbUp=(param)=>instance.post('api/user/isThumbUp',{...param})
+  const cancelThumbUp=(param)=>instance.post('api/user/cancelThumbUp',{...param})
+  const getThumb=(id)=>instance.get('api/user/getThumb?articleId='+id)
+
 
   const refreshToken=(refresh_token)=>instance.post('api/user/refreshToken',{refresh_token})
 
@@ -70,7 +75,11 @@ const create = ()=>{
     comment,
     getComment,
     changeAvatar,
-    changeName
+    changeName,
+    thumbUp,
+    getThumb,
+    isThumbUp,
+    cancelThumbUp
   }
 }
 

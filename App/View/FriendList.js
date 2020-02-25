@@ -1,6 +1,6 @@
 import React from 'react'
 import MainView from "../Components/MainView";
-import {Dimensions, FlatList, Text, TextInput, TouchableOpacity, View, Keyboard} from "react-native";
+import {Dimensions, FlatList, Text, TextInput, TouchableOpacity, View, Keyboard, ActivityIndicator} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {Header, Button} from "react-native-elements";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -96,7 +96,7 @@ class FriendList extends React.Component{
         refreshing: true
       },()=>{
         ApiUtil.request('getArticle',this.state.page,true).then((result)=>{
-          if(result.data.errno === 0 && result.data.data.length){
+          if(result.data.errno === 0){
             this.setState({
               articles: result.data.data,
               refreshing: false
@@ -110,6 +110,7 @@ class FriendList extends React.Component{
 
   scroll=()=>{
     this.footer.measure((x,y,width,height,pageX, pageY) => {
+
       if(pageY < winHeight-30 && !this.state.loading){
         this.setState({
           loading: true,
@@ -151,6 +152,7 @@ class FriendList extends React.Component{
         name={user.username}
         content={item.articleContent}
         articleId={item._id}
+        time={item.time}
       >
 
       </ListItem>
@@ -159,8 +161,14 @@ class FriendList extends React.Component{
 
   renderFooter=()=>{
     return(
-      <View style={{width: winWidth, height: 20, backgroundColor: 'red'}} ref={(ref) => this.footer = ref}>
-        <Text>{this.state.tip}</Text>
+      <View style={{width: winWidth, height: 20, alignItems: 'center'}} ref={(ref) => this.footer = ref}>
+        {
+          this.state.tip === Tip.loading?
+            <ActivityIndicator size={'small'}></ActivityIndicator>
+            :
+            <Text>{this.state.tip}</Text>
+        }
+
       </View>
     )
   }
