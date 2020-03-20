@@ -31,7 +31,7 @@ class FriendList extends React.Component{
       tip: Tip.loaded
     }
   }
-  
+
   componentWillMount(): void {
     ApiUtil.request('getArticle',this.state.page,true).then((result)=>{
       if(result.data.errno === 0){
@@ -64,6 +64,7 @@ class FriendList extends React.Component{
     })
   }
 
+  //评论
   comment=()=>{
     const userId = this.props.user.id
     const articleId = this.props.articleId
@@ -84,6 +85,7 @@ class FriendList extends React.Component{
   }
 
 
+  //刷新
   refresh=()=>{
 
     if(!this.state.refreshing){
@@ -103,7 +105,7 @@ class FriendList extends React.Component{
     }
   }
 
-
+  //加载
   scroll=()=>{
     this.footer.measure((x,y,width,height,pageX, pageY) => {
 
@@ -138,8 +140,7 @@ class FriendList extends React.Component{
     })
   }
 
-
-
+  //渲染
   renderItem=({item})=>{
     const user = item.userId
     return(
@@ -155,6 +156,7 @@ class FriendList extends React.Component{
     )
   }
 
+  //渲染底部
   renderFooter=()=>{
     return(
       <View style={{width: winWidth, height: 20, alignItems: 'center'}} ref={(ref) => this.footer = ref}>
@@ -169,6 +171,7 @@ class FriendList extends React.Component{
     )
   }
 
+  //渲染分割
   renderSeparator=()=>{
     return(
       <View style={{width: winWidth, height: 1, backgroundColor: 'black' }}>
