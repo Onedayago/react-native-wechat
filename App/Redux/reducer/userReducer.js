@@ -36,7 +36,10 @@ export default (state = defaultState, action) => {
         friendList: fromJS(action.data)
       })
     case actionTypes.AddTalkList:
-      if(state.get('talkList').includes(fromJS(action.data))){
+      let has = state.get('talkList').find((item)=>{
+        return item.get('roomId') === action.data.roomId
+      })
+      if(has){
         return state
       }else{
         return state.merge({
