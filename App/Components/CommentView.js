@@ -2,7 +2,7 @@ import React from 'react'
 import {View, Text, TouchableOpacity, TextInput} from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 import {connect} from "react-redux";
-import {ChangeShowInput} from '../Redux/actionCreators'
+import {FriendAction} from '../Redux/actionCreators'
 import ApiUtil from '../Service/ApiUtil'
 import Toast from "react-native-root-toast";
 
@@ -15,9 +15,6 @@ class CommentView extends React.Component{
     }
   }
 
-  componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
-
-  }
 
   componentDidMount(): void {
     const param = {
@@ -53,7 +50,7 @@ class CommentView extends React.Component{
             duration: Toast.durations.SHORT,
             position: Toast.positions.CENTER
           })
-          this.props.changeInput({
+          this.props.friendAction({
             'commentArticleId': this.props.articleId
           })
 
@@ -75,7 +72,7 @@ class CommentView extends React.Component{
             duration: Toast.durations.SHORT,
             position: Toast.positions.CENTER
           })
-          this.props.changeInput({
+          this.props.friendAction({
             'commentArticleId': this.props.articleId
           })
           this.setState({
@@ -140,7 +137,7 @@ class CommentView extends React.Component{
                   this.setState({
                     show: !this.state.show
                   })
-                  this.props.changeInput({
+                  this.props.friendAction({
                     'show': true,
                     'articleId': this.props.articleId
                   })
@@ -163,8 +160,8 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-  changeInput(param){
-    dispatch(ChangeShowInput(param))
+  friendAction(param){
+    dispatch(FriendAction(param))
   }
 })
 

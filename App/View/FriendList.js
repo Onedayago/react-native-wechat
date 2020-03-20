@@ -7,7 +7,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import ApiUtil from '../Service/ApiUtil'
 import ListItem from '../Components/ListItem'
 import {connect} from "react-redux";
-import {ChangeShowInput} from "../Redux/actionCreators";
+import {FriendAction} from "../Redux/actionCreators";
 
 const winWidth = Dimensions.get('window').width
 const winHeight = Dimensions.get('window').height
@@ -31,11 +31,7 @@ class FriendList extends React.Component{
       tip: Tip.loaded
     }
   }
-
-  componentWillReceiveProps(nextProps): void {
-
-  }
-
+  
   componentWillMount(): void {
     ApiUtil.request('getArticle',this.state.page,true).then((result)=>{
       if(result.data.errno === 0){
@@ -79,7 +75,7 @@ class FriendList extends React.Component{
     }
     ApiUtil.request('comment',param,true).then((result)=>{
       if(result.data.errno === 0){
-        this.props.changeInput({
+        this.props.friendAction({
           'show': false,
           'commentArticleId': this.props.articleId
         })
@@ -279,8 +275,8 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-  changeInput(param){
-    dispatch(ChangeShowInput(param))
+  friendAction(param){
+    dispatch(FriendAction(param))
   }
 })
 

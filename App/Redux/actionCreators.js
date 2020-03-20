@@ -89,6 +89,14 @@ export function AddRoomLastMsg(data) {
 }
 
 
+export function FriendAction(data) {
+  return {
+    type:  actionTypes.FriendAction,
+    data: data
+  }
+}
+
+
 
 
 

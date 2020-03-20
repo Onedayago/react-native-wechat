@@ -6,7 +6,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CommentView from '../Components/CommentView'
 import ApiUtil from '../Service/ApiUtil'
-import {ChangeShowInput} from "../Redux/actionCreators";
+import {FriendAction} from "../Redux/actionCreators";
 import {connect} from "react-redux";
 
 const width = Dimensions.get('window').width
@@ -29,7 +29,7 @@ class ListItem extends React.Component{
             comments: result.data.data
           })
 
-          this.props.changeInput({
+          this.props.friendAction({
             'show': false,
             'commentArticleId': ''
           })
@@ -42,7 +42,7 @@ class ListItem extends React.Component{
             thumbs: result.data.data
           })
 
-          this.props.changeInput({
+          this.props.friendAction({
             'show': false,
             'commentArticleId': ''
           })
@@ -140,6 +140,8 @@ class ListItem extends React.Component{
             <Text style={{fontSize: 12}}>{this.getTime(this.props.time)}</Text>
             <CommentView articleId={this.props.articleId}></CommentView>
           </View>
+
+          {/*赞 与 评论*/}
           <View style={{backgroundColor: 'gray', marginTop: 10}}>
             {
               this.state.thumbs.length?this.state.thumbs.map((item)=>{
@@ -182,8 +184,8 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-  changeInput(param){
-    dispatch(ChangeShowInput(param))
+  friendAction(param){
+    dispatch(FriendAction(param))
   }
 })
 

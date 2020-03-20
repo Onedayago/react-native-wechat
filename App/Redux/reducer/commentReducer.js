@@ -11,7 +11,7 @@ const defaultState = fromJS({ // 将对象转成immutable对象
 export default (state = defaultState, action) => {
 
   switch (action.type) {
-    case actionTypes.ChangeShowInput:
+    case actionTypes.FriendAction:
       if(action.data.show){
         return state.merge({
           showInput: true,
