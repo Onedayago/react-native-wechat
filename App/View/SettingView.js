@@ -16,7 +16,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import ApiUtil from "../Service/ApiUtil";
 import {connect} from "react-redux";
 import Toast from "react-native-root-toast";
-const Api = ApiUtil.api();
 import {LoginOut}  from '../Redux/actionCreators'
 
 class SettingView extends React.Component {
@@ -29,10 +28,10 @@ class SettingView extends React.Component {
   loginOut= async () => {
     await AsyncStorage.clear();
 
-    const user = this.props.user.toJS();
+    const user = this.props.user;
 
     try{
-      const result = await Api.loginOut(user.id)
+      const result = await ApiUtil.request('loginOut',user.id)
       if(result.data.errno === 0){
         Toast.show(result.data.msg,{
           duration: Toast.durations.SHORT,
@@ -40,13 +39,21 @@ class SettingView extends React.Component {
         })
 
         this.props.logout();
-
+        this.props.navigation.navigate('LoginView')
+      }else{
+        Toast.show(result.data.msg,{
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.TOP
+        })
       }
     }catch (e) {
+      Toast.show("退出异常",{
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.TOP
+      })
 
+      this.props.logout();
     }
-
-    this.props.navigation.navigate('LoginView')
   }
 
   render(){
@@ -82,7 +89,7 @@ class SettingView extends React.Component {
 }
 
 const mapState = state => ({
-  user: state.UserReducer.get('user'),
+  user: state.UserReducer.get('user').toJS(),
 })
 
 const mapDispatch = dispatch => ({

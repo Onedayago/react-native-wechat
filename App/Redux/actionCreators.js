@@ -1,28 +1,22 @@
 import actionTypes from './actionTypes'
 
-
-
-export function LoginStart(data) { // 统一管理action
+//登录
+export function LoginIn(data) {
   return {
-    type:  actionTypes.LoginStart,
+    type:  actionTypes.LoginIn,
     data: data
   }
 }
 
-export function LoginSuccess(data) { // 统一管理action
+//保存用户信息
+export function SaveUser(data) {
   return {
-    type:  actionTypes.LoginSuccess,
+    type:  actionTypes.SaveUser,
     data: data
   }
 }
 
-export function LoginFail(data) {
-  return {
-    type:  actionTypes.LoginFail,
-    data: data
-  }
-}
-
+//退出
 export function LoginOut(data) {
   return {
     type:  actionTypes.LoginOut,
@@ -30,48 +24,31 @@ export function LoginOut(data) {
   }
 }
 
-export function RegisterStart(data) { // 统一管理action
+//注册
+export function Register(data) {
   return {
-    type:  actionTypes.RegisterStart,
+    type:  actionTypes.Register,
     data: data
   }
 }
 
-export function RegisterSuccess(data) { // 统一管理action
+//获取好友列表
+export function GetFriendList(data) {
   return {
-    type:  actionTypes.RegisterSuccess,
+    type:  actionTypes.GetFriendList,
     data: data
   }
 }
 
-export function RegisterFail(data) {
+//添加最近聊天好友
+export function AddTalkList(data) {
   return {
-    type:  actionTypes.RegisterFail,
+    type:  actionTypes.AddTalkList,
     data: data
   }
 }
 
-export function GetFriend(data) {
-  return {
-    type:  actionTypes.GetFriend,
-    data: data
-  }
-}
-
-export function SetMessage(data) {
-  return {
-    type:  actionTypes.SetMessage,
-    data: data
-  }
-}
-
-export function SetTalkList(data) {
-  return {
-    type:  actionTypes.SetTalkList,
-    data: data
-  }
-}
-
+//删除最近聊天好友
 export function DeleteTalkList(data) {
   return {
     type:  actionTypes.DeleteTalkList,
@@ -79,47 +56,40 @@ export function DeleteTalkList(data) {
   }
 }
 
-export function AddLastMessage(data) {
+//获取聊天室中的消息
+export function AddRoomMessage(data) {
   return {
-    type:  actionTypes.AddLastMessage,
+    type:  actionTypes.AddRoomMessage,
     data: data
   }
 }
 
-export function AddUnReadMessage(data) {
+//获取聊天室中的未读消息
+export function AddRoomUnReadMsg(data) {
   return {
-    type:  actionTypes.AddUnReadMessage,
+    type:  actionTypes.AddRoomUnReadMsg,
     data: data
   }
 }
 
-export function DeleteUnReadMessage(data) {
+//删除聊天室中的未读消息
+export function DeleteRoomUnReadMsg(data) {
   return {
-    type:  actionTypes.DeleteUnReadMessage,
+    type:  actionTypes.DeleteRoomUnReadMsg,
     data: data
   }
 }
 
-export function ChangeShowButton(data) {
+//添加聊天室最后消息
+export function AddRoomLastMsg(data) {
   return {
-    type:  actionTypes.ChangeShowButton,
+    type:  actionTypes.AddRoomLastMsg,
     data: data
   }
 }
 
-export function ChangeShowInput(data) {
-  return {
-    type:  actionTypes.ChangeShowInput,
-    data: data
-  }
-}
 
-export function UpdateUser(data) {
-  return {
-    type:  actionTypes.UpdateUser,
-    data: data
-  }
-}
+
 
 
 

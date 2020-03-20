@@ -58,7 +58,7 @@ class Me extends React.Component {
 
 
 const mapState = state => ({
-  user: state.UserReducer.get('user').toJS(),
+  user: state.UserReducer.get('user'),
 })
 
 const mapDispatch = dispatch => ({

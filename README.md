@@ -1,5 +1,10 @@
 # ReactNative-Weixin
 
+#### 最新升级
+
+1. 登录增加密码加密
+2. 优化 redux 
+
 #### 介绍
 使用 React Native 开发的仿微信 App
 

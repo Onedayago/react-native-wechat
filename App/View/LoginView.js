@@ -18,6 +18,7 @@ import { Button } from 'react-native-elements';
 import { Input } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Toast from "react-native-root-toast";
+import {encrypt} from '../Util/Tool'
 
 let Styles = {};
 const input = React.createRef();
@@ -38,34 +39,49 @@ class LoginView extends React.Component{
   }
 
   componentWillReceiveProps(nextProps): void {
-    if(!nextProps.loading){
-      Toast.show(nextProps.tip,{
+
+    if(nextProps.loginObj.tip !== ''){
+      Toast.show(nextProps.loginObj.tip,{
         duration: Toast.durations.SHORT,
         position: Toast.positions.CENTER
       })
-      if(nextProps.isLogin){
-        this.props.navigation.navigate('Main');
-      }
     }
 
+    if(nextProps.loginObj.login){
+      this.props.navigation.navigate('Main')
+    }
   }
 
   componentDidMount(): void {
     input.current.focus();
   }
 
+  //登录
   login=()=>{
-    const {nameError, passError, ...user} = this.state;
+    let {nameError, passError, username, password} = this.state;
 
-    if(nameError!=='' || passError!==''){
-      Toast.show('请输入正确的参数!',{
+    if(nameError !== ''){
+      Toast.show(nameError,{
         duration: Toast.durations.SHORT,
         position: Toast.positions.CENTER
       })
       return;
     }
 
-    this.props.login(user)
+    if(passError !== ''){
+      Toast.show(passError,{
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.CENTER
+      })
+      return;
+    }
+
+    password = encrypt(password)
+
+    this.props.login({
+      username,
+      password
+    })
   }
 
   render(){
@@ -73,8 +89,14 @@ class LoginView extends React.Component{
     return(
       <MainView>
         <LinearGradient colors={['rgb(66, 122, 184)', 'rgb(230, 230, 230)']} style={Styles.LoginContainer}>
-            <Text style={Styles.LoginLogo}>LOGO</Text>
+
+            {/*LOGO*/}
+
+            <Text style={Styles.LoginLogo}>WECHAT</Text>
             <View style={Styles.LoginForm}>
+
+              {/*用户名输入*/}
+
               <Input
                 ref={input}
                 placeholder='用户名'
@@ -106,7 +128,11 @@ class LoginView extends React.Component{
                 }}
               >
               </Input>
+
+              {/*密码输入框*/}
+
               <Input
+                secureTextEntry={true}
                 placeholder='密码'
                 leftIcon={
                   <FontAwesome
@@ -118,6 +144,7 @@ class LoginView extends React.Component{
                 errorStyle={{ color: 'red' }}
                 errorMessage={this.state.passError}
                 leftIconContainerStyle={{marginRight: 10}}
+
                 value={this.state.password}
                 onChangeText={(text)=>{
                   this.setState({
@@ -134,18 +161,25 @@ class LoginView extends React.Component{
                     }
                   })
                 }}
+
               >
               </Input>
+
+              {/*登录按钮*/}
+
               <Button
                 title={"登录"}
                 buttonStyle={Styles.LoginButton}
-                loading={this.props.loading}
+                loading={this.props.loginObj.loading}
                 onPress={this.login}
+                disabled={this.state.username === '' || this.state.password === ''}
               >
 
               </Button>
               <Text style={{color:'rgb(66, 122, 184)'}}>忘记密码 ？</Text>
             </View>
+
+            {/*跳转到注册*/}
             <Button
               title="免费注册"
               type="outline"
@@ -163,9 +197,7 @@ class LoginView extends React.Component{
 }
 
 const mapState = state => ({
-  loading: state.UserReducer.get('loading'),
-  tip: state.UserReducer.get('tip'),
-  isLogin: state.UserReducer.get('login')
+  loginObj: state.UserReducer.get('loginObj').toJS(),
 })
 
 const mapDispatch = dispatch => ({

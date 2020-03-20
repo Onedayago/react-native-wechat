@@ -38,7 +38,7 @@ const create = ()=>{
   const addFriend=(param)=>instance.post('api/friend/addFriend',{...param});
   const deleteFriend=(param)=>instance.post('api/friend/deleteFriend',{...param});
   const getFriendList=(id)=>instance.get('api/friend/getFriendList?selfId='+id)
-  const loginOut=(id)=>instance.get('api/user/loginOut?selfId='+id)
+  const loginOut=(id)=>instance.get('api/user/loginOut?userId='+id)
   const getMessageHistory=({roomId, messageId, page})=>instance.get('api/message/getMessageHistory?roomId='+roomId+'&messageId='+messageId+'&page='+page)
   const deleteMessageHistory=(id)=>instance.get('api/message/deleteMessageHistory?roomId='+id)
 

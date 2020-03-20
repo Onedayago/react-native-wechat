@@ -18,7 +18,7 @@ import { Button } from 'react-native-elements';
 import { Input } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Toast from 'react-native-root-toast';
-
+import {encrypt} from '../Util/Tool'
 
 let Styles = {};
 const input = React.createRef();
@@ -42,15 +42,17 @@ class RegisterView extends React.Component{
   }
 
   componentWillReceiveProps(nextProps): void {
-    if(!nextProps.loading){
-      Toast.show(nextProps.tip,{
+    if(nextProps.registerObj.tip !== ''){
+      Toast.show(nextProps.registerObj.tip,{
         duration: Toast.durations.SHORT,
         position: Toast.positions.CENTER
       })
-      if(nextProps.isRegister){
-        this.props.navigation.navigate('LoginView');
-      }
     }
+
+    if(nextProps.registerObj.register){
+      this.props.navigation.navigate('LoginView')
+    }
+
   }
 
   componentDidMount(): void {
@@ -58,10 +60,26 @@ class RegisterView extends React.Component{
   }
 
   register=()=>{
-    const {nameError, passError, passConfirmError, ...user} = this.state;
+    let {nameError, passError, passConfirmError, username, password, passwordConfirm} = this.state;
 
-    if(nameError!=='' || passError!=='' || passConfirmError!==''){
-      Toast.show('请输入正确的参数!',{
+    if(nameError !== ''){
+      Toast.show(nameError,{
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.CENTER
+      })
+      return;
+    }
+
+    if(passError !== ''){
+      Toast.show(passError,{
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.CENTER
+      })
+      return;
+    }
+
+    if(passConfirmError !== ''){
+      Toast.show(passConfirmError,{
         duration: Toast.durations.SHORT,
         position: Toast.positions.CENTER
       })
@@ -69,7 +87,15 @@ class RegisterView extends React.Component{
     }
 
 
-    this.props.register(user)
+
+    password = encrypt(password)
+    passwordConfirm = encrypt(passwordConfirm)
+
+    this.props.register({
+      'username': username,
+      'password': password,
+      'passwordConfirm': passwordConfirm
+    })
 
   }
 
@@ -78,8 +104,11 @@ class RegisterView extends React.Component{
     return(
       <MainView>
         <LinearGradient colors={['rgb(66, 122, 184)', 'rgb(230, 230, 230)']} style={Styles.RegisterContainer}>
-          <Text style={Styles.RegisterLogo}>LOGO</Text>
+          <Text style={Styles.RegisterLogo}>WECHAT</Text>
           <View style={Styles.RegisterForm}>
+
+            {/*用户名*/}
+
             <Input
               ref={input}
               placeholder='用户名'
@@ -111,6 +140,9 @@ class RegisterView extends React.Component{
               }}
             >
             </Input>
+
+            {/*密码*/}
+
             <Input
               placeholder='密码'
               leftIcon={
@@ -141,6 +173,9 @@ class RegisterView extends React.Component{
               }}
             >
             </Input>
+
+            {/*密码确认*/}
+
             <Input
               placeholder='确认密码'
               leftIcon={
@@ -171,11 +206,15 @@ class RegisterView extends React.Component{
               }}
             >
             </Input>
+
+            {/*注册按钮*/}
+
             <Button
               title={"注册"}
               buttonStyle={Styles.RegisterButton}
               onPress={this.register}
               loading={this.props.loading}
+              disabled={this.state.username === '' || this.state.password === '' || this.state.passwordConfirm === ''}
             >
 
             </Button>
@@ -196,9 +235,7 @@ class RegisterView extends React.Component{
 }
 
 const mapState = state => ({
-  loading: state.UserReducer.get('loading'),
-  tip: state.UserReducer.get('tip'),
-  isRegister: state.UserReducer.get('register')
+  registerObj: state.UserReducer.get('registerObj').toJS(),
 })
 
 const mapDispatch = dispatch => ({

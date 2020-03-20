@@ -2,30 +2,33 @@ import actionTypes from '../actionTypes'
 import {fromJS} from 'immutable'
 
 const defaultState = fromJS({ // 将对象转成immutable对象
-  messageList: {},
+  messageList: fromJS({}),
 })
 
 export default (state = defaultState, action) => {
 
   switch (action.type) {
-    case actionTypes.SetMessage:
+    case actionTypes.AddRoomMessage:
 
-      const message = state.get('messageList').toJS();
-
-      if(message[action.data.roomId]){
-        message[action.data.roomId].push(action.data);
+      if(state.get('messageList').has(action.data.roomId)){
+        let messageList = state.merge({
+          messageList: state.get('messageList').update(action.data.roomId, value => value.push(fromJS(action.data)))
+        })
+        return state.merge({
+          messageList: messageList.get('messageList').update(action.data.roomId, value => {
+            if(value.size > 10){
+              return value.shift()
+            }else{
+              return value
+            }
+          })
+        })
       }else{
-        message[action.data.roomId] = [];
-        message[action.data.roomId].push(action.data);
+        return state.merge({
+          messageList: state.get('messageList').set(action.data.roomId, fromJS([fromJS(action.data)]))
+        })
       }
 
-      if(message[action.data.roomId].length > 10){
-        message[action.data.roomId].shift()
-      }
-
-      return state.merge({
-        messageList: fromJS(message)
-      })
     case actionTypes.LoginOut:
       return state.merge({
         messageList: fromJS({})

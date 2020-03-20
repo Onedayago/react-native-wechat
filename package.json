@@ -11,6 +11,7 @@
     "@react-native-community/async-storage": "^1.7.1",
     "aurora-imui-react-native": "^0.14.0",
     "axios": "^0.19.2",
+    "crypto-js": "3.3.0",
     "immutable": "^4.0.0-rc.12",
     "react": "16.6.1",
     "react-native": "0.57.7",

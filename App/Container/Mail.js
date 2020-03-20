@@ -80,14 +80,6 @@ class Mail extends React.Component {
           }}
           bottomDivider
         />
-        <ListItem
-          title={'公众号'}
-          leftAvatar={{
-            rounded: false,
-            source: { uri: config.baseURL+'/friend.jpg' },
-          }}
-          bottomDivider
-        />
       </View>
     )
   }
@@ -130,7 +122,7 @@ class Mail extends React.Component {
 
     let data = {}
 
-    this.props.friendList.forEach((item, index)=>{
+    this.props.friendList.length !== 0 && this.props.friendList.forEach((item, index)=>{
         if(!data[item.friendId.letter]){
           data[item.friendId.letter] = []
           data[item.friendId.letter].push(item.friendId)

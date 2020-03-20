@@ -1,7 +1,7 @@
-
+import {Platform} from 'react-native'
 
 const config = {
-  baseURL: 'http://localhost:9099'
+  baseURL: Platform.OS === 'ios'? 'http://localhost:9099':'http://10.0.2.2:9099'
 }
 
 

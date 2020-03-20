@@ -21,7 +21,7 @@ import {Header} from "react-native-elements";
 import {connect} from "react-redux";
 import config from '../Config'
 import {sort} from '../Util/Tool'
-import {AddLastMessage, DeleteUnReadMessage} from '../Redux/actionCreators'
+import {AddRoomLastMsg, DeleteRoomUnReadMsg} from '../Redux/actionCreators'
 import ApiUtil from '../Service/ApiUtil'
 let RNFS = require('react-native-fs');
 
@@ -51,7 +51,7 @@ class ChatView extends React.Component{
       toName: this.props.navigation.getParam('friendName'),
       toId: this.props.navigation.getParam('friendId'),
       roomId: '',
-      page: 0
+      page: 0,
     }
   }
 
@@ -83,6 +83,9 @@ class ChatView extends React.Component{
   }
 
   componentDidMount(): void {
+    if (Platform.OS === "android") {
+      this.InputView.setMenuContainerHeight(316)
+    }
     AuroraIController.addMessageListDidLoadListener(this.messageListDidLoadEvent);
   }
 
@@ -90,6 +93,7 @@ class ChatView extends React.Component{
     AuroraIController.removeMessageListDidLoadListener(this.messageListDidLoadEvent);
   }
 
+  //在消息列表中插入新消息
   addMessage= async (messList, insert = false) => {
     let message = [];
     for (let i = 0; i < messList.length; i++) {
@@ -108,20 +112,24 @@ class ChatView extends React.Component{
       }
 
 
+      //判断消息归属用户
       if (this.state.user.id === item.userId) {
         mess.isOutgoing = true
       } else {
         mess.isOutgoing = false
       }
 
+      //时间
       mess.timeString = item.time
 
+      //用户信息
       let user = {
         userId: item.userId,
         displayName: item.username,
         avatarPath: config.baseURL + '/' + item.avatar
       }
       mess.fromUser = user
+
 
 
       if (firstMessage === -1) {
@@ -138,11 +146,13 @@ class ChatView extends React.Component{
     }
 
 
+    //判断是获取历史消息还是插入新消息
     if (insert) {
       AuroraIController.insertMessagesToTop(message.reverse())
     } else {
       AuroraIController.appendMessages(message)
     }
+
   }
 
   messageListDidLoadEvent= async () => {
@@ -197,7 +207,11 @@ class ChatView extends React.Component{
           })
           await this.addMessage(result.data.data, true)
         }
+        if (Platform.OS === 'android') {
+          this.MessageListView.refreshComplete()
+        }
       })
+
   }
 
   onStartRecordVoice = (e) => {
@@ -236,6 +250,7 @@ class ChatView extends React.Component{
     console.log("on cancel record voice")
   }
 
+  //上传音频
   uploadVoice = async (mediaPath) => {
 
     let uploadUrl = config.baseURL + '/api/upload/uploadVoice'
@@ -275,6 +290,7 @@ class ChatView extends React.Component{
 
   }
 
+  //下载音频
   downVoice = async (filename) => {
 
     let downUrl = config.baseURL + '/' + filename
@@ -300,15 +316,17 @@ class ChatView extends React.Component{
     Styles = getStyle()
     return(
       <MainView style={{marginTop: 0}}>
+
         {/*头部*/}
+
         <Header
           placement="left"
           leftComponent={
             <TouchableOpacity onPress={()=>{
               if(lastMessage.text){
-                this.props.addLastMessage({'username': this.state.toName, 'message': lastMessage})
+                this.props.addRoomLastMsg({'roomId': this.state.roomId, 'message': lastMessage})
               }
-              this.props.deleteUnReadMessage({'roomId': this.state.roomId})
+              this.props.deleteRoomUnReadMsg({'roomId': this.state.roomId})
               this.props.navigation.navigate('Home');
             }}>
               <FontAwesome name={'angle-left'} size={20} color={'black'}
@@ -331,17 +349,22 @@ class ChatView extends React.Component{
             </TouchableOpacity>
           }
         />
+
         {/*聊天列表*/}
+
         <MessageListView
+          ref={(ref)=>this.MessageListView = ref}
           isAllowPullToRefresh={true}
           onPullToRefresh={this.onPullToRefresh}
           style={Styles.messageListLayout}
           onTouchMsgList={this.onTouchMsgList}
         >
+        </MessageListView>
 
         {/*输入框*/}
-        </MessageListView>
+
         <InputView
+          ref={(ref)=>this.InputView = ref}
           style={[Styles.inputViewLayout, {height: this.state.inputLayoutHeight}]}
           onSizeChange={this.onInputViewSizeChange}
           onSendText={this.onSendText}
@@ -362,11 +385,11 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-  addLastMessage(param){
-    dispatch(AddLastMessage(param))
+  addRoomLastMsg(param){
+    dispatch(AddRoomLastMsg(param))
   },
-  deleteUnReadMessage(param){
-    dispatch(DeleteUnReadMessage(param))
+  deleteRoomUnReadMsg(param){
+    dispatch(DeleteRoomUnReadMsg(param))
   }
 })
 

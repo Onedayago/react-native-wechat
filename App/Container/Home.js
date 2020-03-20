@@ -19,7 +19,6 @@ import {connect} from "react-redux";
 import { DeleteTalkList} from "../Redux/actionCreators";
 import Toast from "react-native-root-toast";
 import config from '../Config'
-import {storage} from '../Util/storageToken'
 import {sort} from '../Util/Tool'
 
 
@@ -33,8 +32,8 @@ class Home extends React.Component {
 
   componentWillMount(): void {
     const user = this.props.user;
-    const login = this.props.login;
-    if(login){
+    const loginObj = this.props.loginObj;
+    if(loginObj.login){
       global.io.emit('login', user, (mes)=>{
         Toast.show(mes,{
           duration: Toast.durations.SHORT,
@@ -48,6 +47,7 @@ class Home extends React.Component {
 
   componentDidMount(): void {
     const user = this.props.user;
+    console.tron.log(user)
     this.props.getFriendList(user.id);
   }
 
@@ -96,7 +96,7 @@ class Home extends React.Component {
       >
         <ListItem
           title={item.username}
-          subtitle={item.lastMessage && item.lastMessage.text}
+          subtitle={item.lastMsg && item.lastMsg.text}
           leftElement={
             <View>
               <Avatar
@@ -105,8 +105,8 @@ class Home extends React.Component {
                   uri: config.baseURL +'/'+ item.avatar
                 }}
               />
-              {item.unReadMessage > 0?
-                <Badge value={item.unReadMessage} status="error" containerStyle={{ position: 'absolute', top: -15, right: -15}}></Badge>
+              {item.unReadMsg > 0?
+                <Badge value={item.unReadMsg} status="error" containerStyle={{ position: 'absolute', top: -15, right: -15}}></Badge>
                 :
                 null
               }
@@ -122,7 +122,9 @@ class Home extends React.Component {
   render() {
     return (
       <MainView style={{marginTop: 0}}>
+
         {/*头部*/}
+
         <TouchableWithoutFeedback
           onPress={()=>{
             if(this.state.show){
@@ -160,7 +162,9 @@ class Home extends React.Component {
         </TouchableWithoutFeedback>
 
 
-        {/*聊天列表*/}
+        {/*最近聊天列表*/}
+
+
         <FlatList
           keyExtractor={this.keyExtractor}
           data={this.props.talkList}
@@ -175,7 +179,9 @@ class Home extends React.Component {
           >
 
         </FlatList>
+
         {/*弹窗*/}
+
         {this.state.show?
           <DropMenu
             style={{position:'absolute', right:10, top: 60}}
@@ -191,7 +197,7 @@ class Home extends React.Component {
 
 const mapState = state => ({
   user: state.UserReducer.get('user').toJS(),
-  login: state.UserReducer.get('login'),
+  loginObj: state.UserReducer.get('loginObj').toJS(),
   talkList: state.UserReducer.get('talkList').toJS()
 })
 

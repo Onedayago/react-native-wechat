@@ -14,11 +14,13 @@ import { Provider } from 'react-redux'
 import configureStore from './App/Redux'
 import socket from 'socket.io-client'
 import {PersistGate} from 'redux-persist/integration/react'
-import {SetMessage, AddUnReadMessage} from './App/Redux/actionCreators'
+import {AddRoomMessage, AddRoomUnReadMsg} from './App/Redux/actionCreators'
 import Toast from "react-native-root-toast";
 import {getFriendList} from "./App/Service/action";
+import config from './App/Config'
 
-const io = socket('http://127.0.0.1:9099');
+
+const io = socket(config.baseURL);
 
 global.io = io
 
@@ -46,8 +48,8 @@ io.on('connect', (socket)=>{
 })
 
 io.on('message',(obj)=>{
-  store.dispatch(SetMessage(obj))
-  store.dispatch(AddUnReadMessage(obj))
+  store.dispatch(AddRoomMessage(obj))
+  store.dispatch(AddRoomUnReadMsg(obj))
 })
 
 io.on('addFriend',()=>{

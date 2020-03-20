@@ -10,8 +10,7 @@
 
 import React from 'react'
 import MainView from '../Components/MainView'
-import {Text, TextInput, Button, View, TouchableOpacity} from 'react-native'
-import Ionicons from "react-native-vector-icons/Ionicons";
+import {TouchableOpacity} from 'react-native'
 import {Header, ListItem} from "react-native-elements";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { SearchBar } from 'react-native-elements';
@@ -27,26 +26,28 @@ class AddFriend extends React.Component{
     };
   }
 
-  search=()=>{
+  search= async () => {
     const {search} = this.state
-    ApiUtil.request('searchFriend', {'friendName': search},true).then((result)=>{
 
-      this.setState({
-        search: ''
-      })
+    try{
+      const result = await ApiUtil.request('searchFriend', {'friendName': search}, true)
 
-      if(result.data.errno === 0){
-        this.props.navigation.navigate('UserDetail',{'user':result.data.data});
-      }else{
-        Toast.show(result.data.msg,{
+      if (result.data.errno === 0) {
+        this.props.navigation.navigate('UserDetail', {'user': result.data.data});
+      } else {
+        Toast.show(result.data.msg, {
           duration: Toast.durations.SHORT,
           position: Toast.positions.CENTER
         })
       }
+    }catch {
 
-    }).catch(()=>{
+    }
 
+    this.setState({
+      search: ''
     })
+
   }
 
   updateSearch = search => {

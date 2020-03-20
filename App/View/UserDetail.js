@@ -17,7 +17,7 @@ import ApiUtil from '../Service/ApiUtil'
 import {connect} from "react-redux";
 import Toast from "react-native-root-toast";
 import ActionSheet from 'react-native-actionsheet'
-import {DeleteTalkList, SetTalkList} from '../Redux/actionCreators'
+import {DeleteTalkList, AddTalkList} from '../Redux/actionCreators'
 import {sort} from '../Util/Tool'
 class UserDetail extends React.Component{
   constructor(props) {
@@ -29,7 +29,7 @@ class UserDetail extends React.Component{
   }
 
   componentWillMount(): void {
-    this.props.friendList.forEach((item, index)=>{
+    this.props.friendList.some((item, index)=>{
       if(item.friendId.username === this.state.user.username){
         this.setState({
           isFriend: true
@@ -67,23 +67,27 @@ class UserDetail extends React.Component{
     const {id} = this.props.self
     const roomId = sort(id, _id)
     const data = {...this.state.user, roomId}
-    this.props.setTalkList(data)
+    this.props.addTalkList(data)
     this.props.navigation.navigate('ChatView',{'friendName': username, 'friendId': _id});
   }
 
-  addFriend=()=>{
+  addFriend= async () => {
 
     const self = this.props.self;
     const user = this.state.user
 
-    ApiUtil.request('addFriend',{'selfId': self.id,'friendId': user.id},true).then((result)=>{
-        Toast.show(result.data.msg,{
-            duration: Toast.durations.SHORT,
-            position: Toast.positions.CENTER
-        })
-    }).catch(()=>{
-
-    })
+    try{
+      const result = await ApiUtil.request('addFriend', {'selfId': self.id, 'friendId': user.id}, true)
+      Toast.show(result.data.msg, {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.CENTER
+      })
+    }catch {
+      Toast.show('添加好友异常', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.CENTER
+      })
+    }
   }
 
   render(){
@@ -174,8 +178,8 @@ const mapDispatch = dispatch => ({
   deleteFriend(param){
     dispatch(DeleteTalkList(param))
   },
-  setTalkList(param){
-    dispatch(SetTalkList(param))
+  addTalkList(param){
+    dispatch(AddTalkList(param))
   }
 })
 
