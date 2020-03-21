@@ -21,13 +21,19 @@
 #### 后台链接
 [后台地址](https://gitee.com/icfyl/ChatServe)
 #### 安装教程
-
+##### ios
 1.  git clone https://gitee.com/icfyl/ReactNative-Weixin.git
 2.  cd ReactNative-Weixin
 3.  yarn install
 4.  使用 xcode 打开 ios 工程，然后运行
-5. 目前还未开始调试 android 端
 6. 有问题和建议可以加群交流 1058706178
+
+#### 安卓
+1.  git clone https://gitee.com/icfyl/ReactNative-Weixin.git
+2.  cd ReactNative-Weixin
+3.  yarn install
+4.  react-native run-android
+
 #### 已完成的功能
 
 1.  登录
