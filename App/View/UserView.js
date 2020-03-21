@@ -94,7 +94,7 @@ class UserView extends React.Component{
 
   render(){
     return(
-      <MainView style={{marginTop: 0}}>
+      <MainView>
         <Header
           placement="left"
           leftComponent={
@@ -110,6 +110,8 @@ class UserView extends React.Component{
           containerStyle={{
             backgroundColor: 'rgb(238, 238, 238)',
             justifyContent: 'space-around',
+            height: 60,
+            paddingTop: 0
           }}
         />
         <ListItem

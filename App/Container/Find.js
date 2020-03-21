@@ -39,7 +39,7 @@ class Find extends React.Component {
   render() {
     Styles = getStyle();
     return (
-      <MainView style={{marginTop: 0}}>
+      <MainView>
         {/*头部*/}
         <TouchableWithoutFeedback
           onPress={()=>{
@@ -73,7 +73,9 @@ class Find extends React.Component {
               containerStyle={{
                 backgroundColor: 'rgb(238, 238, 238)',
                 justifyContent: 'space-around',
-                paddingRight: 30
+                paddingRight: 30,
+                height: 60,
+                paddingTop: 0,
               }}
             />
             <ListItem

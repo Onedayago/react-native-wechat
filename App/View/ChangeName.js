@@ -40,7 +40,10 @@ class ChangeName extends React.Component{
 
   render(){
     return(
-      <MainView style={{marginTop: 0}}>
+      <MainView>
+
+        {/*头部*/}
+
         <Header
           placement="left"
           leftComponent={
@@ -52,10 +55,12 @@ class ChangeName extends React.Component{
               </FontAwesome>
             </TouchableOpacity>
           }
-          centerComponent={{ text: '更改名字', style: { color: 'black' } }}
+          centerComponent={{ text: '更改名字', style: { color: 'black', fontSize: 16 } }}
           containerStyle={{
             backgroundColor: 'rgb(238, 238, 238)',
             justifyContent: 'space-around',
+            height: 60,
+            paddingTop: 0,
           }}
           rightComponent={
             <Button
@@ -67,9 +72,12 @@ class ChangeName extends React.Component{
             </Button>
           }
         />
+
+        {/*输入框*/}
         <Input value={this.state.name} onChangeText={(text)=>this.setState({
           name: text
         })}/>
+
       </MainView>
     )
   }

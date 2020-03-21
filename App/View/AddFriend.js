@@ -16,8 +16,9 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { SearchBar } from 'react-native-elements';
 import ApiUtil from '../Service/ApiUtil'
 import Toast from "react-native-root-toast";
+import getStyle from './Style/AddFiendStyle'
 
-
+let Styles = {}
 class AddFriend extends React.Component{
   constructor(props) {
     super(props);
@@ -55,8 +56,14 @@ class AddFriend extends React.Component{
   };
 
   render(){
+
+    Styles = getStyle()
+
     return(
-      <MainView style={{marginTop: 0}}>
+      <MainView>
+
+        {/*头部*/}
+
         <Header
           placement="left"
           leftComponent={
@@ -68,21 +75,23 @@ class AddFriend extends React.Component{
               </FontAwesome>
             </TouchableOpacity>
           }
-          centerComponent={{ text: '添加朋友', style: { color: 'black' } }}
-          containerStyle={{
-            backgroundColor: 'rgb(238, 238, 238)',
-            justifyContent: 'space-around',
-          }}
+          centerComponent={{ text: '添加朋友', style: { color: 'black', fontSize: 16 } }}
+          containerStyle={Styles.headerContainer}
         />
+
+        {/*搜索框*/}
+
         <SearchBar
           platform={'ios'}
           placeholder="微信号/手机号"
           value={this.state.search}
-          containerStyle={{backgroundColor: 'rgb(238, 238, 238)'}}
+          containerStyle={{backgroundColor: 'white'}}
           inputContainerStyle={{backgroundColor: 'white'}}
           inputStyle={{ borderColor: 'white'}}
           onChangeText={this.updateSearch}
         />
+
+        {/*搜索内容*/}
         {
           this.state.search!==''?
             <ListItem

@@ -93,7 +93,9 @@ class UserDetail extends React.Component{
   render(){
     const user = this.state.user;
     return(
-      <MainView style={{marginTop: 0}}>
+      <MainView>
+
+        {/*头部*/}
         <Header
           placement="left"
           leftComponent={
@@ -108,6 +110,8 @@ class UserDetail extends React.Component{
           containerStyle={{
             backgroundColor: 'rgb(238, 238, 238)',
             justifyContent: 'space-around',
+            height: 60,
+            paddingTop: 0
           }}
           rightComponent={
             <TouchableOpacity onPress={()=>{
@@ -119,6 +123,8 @@ class UserDetail extends React.Component{
             </TouchableOpacity>
           }
         />
+
+        {/**/}
         <ListItem
           leftAvatar={{ source: { uri: config.baseURL+'/'+user.avatar} }}
           title={user.username}

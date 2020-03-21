@@ -24,7 +24,9 @@ import {sort} from '../Util/Tool'
 import {AddRoomLastMsg, DeleteRoomUnReadMsg} from '../Redux/actionCreators'
 import ApiUtil from '../Service/ApiUtil'
 let RNFS = require('react-native-fs');
+import {Dimensions} from "react-native";
 
+const window = Dimensions.get('window')
 
 
 let Styles = {};
@@ -85,6 +87,9 @@ class ChatView extends React.Component{
   componentDidMount(): void {
     if (Platform.OS === "android") {
       this.InputView.setMenuContainerHeight(316)
+      this.InputView.showMenu(false)
+      this.forceUpdate();
+      this.MessageListView.refreshComplete()
     }
     AuroraIController.addMessageListDidLoadListener(this.messageListDidLoadEvent);
   }
@@ -153,6 +158,12 @@ class ChatView extends React.Component{
       AuroraIController.appendMessages(message)
     }
 
+
+    this.MessageListView.scrollTo({
+      y: 10,
+      animated: true
+    })
+
   }
 
   messageListDidLoadEvent= async () => {
@@ -195,22 +206,33 @@ class ChatView extends React.Component{
 
     })
 
-
   }
 
-  onPullToRefresh = () => {
-    ApiUtil.request('getMessageHistory',{'roomId': this.state.roomId, 'messageId': firstMessage, 'page': this.state.page })
-      .then(async (result) => {
-        if (result.data.data.length !== 0) {
-          this.setState({
-            page: ++this.state.page
-          })
-          await this.addMessage(result.data.data, true)
-        }
-        if (Platform.OS === 'android') {
-          this.MessageListView.refreshComplete()
-        }
+
+  //下拉刷新加载历史消息
+  onPullToRefresh = async () => {
+
+    try{
+      const result = await ApiUtil.request('getMessageHistory', {
+        'roomId': this.state.roomId,
+        'messageId': firstMessage,
+        'page': this.state.page
       })
+
+      if (result.data.data.length !== 0) {
+        this.setState({
+          page: ++this.state.page
+        })
+        await this.addMessage(result.data.data, true)
+      }
+      if (Platform.OS === 'android') {
+        this.MessageListView.refreshComplete()
+      }
+    }catch {
+      if (Platform.OS === 'android') {
+        this.MessageListView.refreshComplete()
+      }
+    }
 
   }
 
@@ -315,7 +337,7 @@ class ChatView extends React.Component{
   render(){
     Styles = getStyle()
     return(
-      <MainView style={{marginTop: 0}}>
+      <MainView>
 
         {/*头部*/}
 
@@ -336,8 +358,14 @@ class ChatView extends React.Component{
           }
           centerComponent={{ text: this.state.toName}}
           containerStyle={{
-            backgroundColor: 'rgb(238, 238, 238)',
+            height: 60,
+            paddingTop: 0,
+            backgroundColor: 'white',
             justifyContent: 'space-around',
+            zIndex: 1000,
+          }}
+          centerContainerStyle={{
+
           }}
           rightComponent={
             <TouchableOpacity onPress={()=>{

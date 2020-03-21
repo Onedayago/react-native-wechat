@@ -19,7 +19,9 @@ class UserMoreView extends React.Component{
 
   render(){
     return(
-      <MainView style={{marginTop: 0}}>
+      <MainView>
+
+        {/*头部*/}
         <Header
           placement="left"
           leftComponent={
@@ -35,6 +37,8 @@ class UserMoreView extends React.Component{
           containerStyle={{
             backgroundColor: 'rgb(238, 238, 238)',
             justifyContent: 'space-around',
+            height: 60,
+            paddingTop: 0,
           }}
         />
         <ListItem

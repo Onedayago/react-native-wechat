@@ -121,7 +121,7 @@ class Home extends React.Component {
 
   render() {
     return (
-      <MainView style={{marginTop: 0}}>
+      <MainView>
 
         {/*头部*/}
 
@@ -154,9 +154,11 @@ class Home extends React.Component {
               </View>
             }
             containerStyle={{
-              backgroundColor: 'rgb(238, 238, 238)',
+              backgroundColor: 'white',
               justifyContent: 'space-around',
-              paddingRight: 30
+              paddingRight: 30,
+              height: 60,
+              paddingTop: 0,
             }}
           />
         </TouchableWithoutFeedback>

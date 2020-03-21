@@ -32,7 +32,9 @@ class PublishView extends React.Component{
 
   render(){
     return(
-      <MainView style={{marginTop: 0}}>
+      <MainView>
+
+        {/*头部*/}
         <Header
           placement="left"
           leftComponent={
@@ -48,6 +50,8 @@ class PublishView extends React.Component{
           containerStyle={{
             backgroundColor: 'rgb(238, 238, 238)',
             justifyContent: 'space-around',
+            height: 60,
+            paddingTop: 0,
           }}
           rightComponent={
             <Button
@@ -59,6 +63,8 @@ class PublishView extends React.Component{
             </Button>
           }
         />
+
+        {/*输入框*/}
         <TextInput
           style={{height: 140, marginHorizontal: 10}}
           numberOfLines = {4}

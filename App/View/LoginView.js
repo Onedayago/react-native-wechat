@@ -19,6 +19,7 @@ import { Input } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Toast from "react-native-root-toast";
 import {encrypt} from '../Util/Tool'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 let Styles = {};
 const input = React.createRef();
@@ -91,7 +92,6 @@ class LoginView extends React.Component{
         <LinearGradient colors={['rgb(66, 122, 184)', 'rgb(230, 230, 230)']} style={Styles.LoginContainer}>
 
             {/*LOGO*/}
-
             <Text style={Styles.LoginLogo}>WECHAT</Text>
             <View style={Styles.LoginForm}>
 

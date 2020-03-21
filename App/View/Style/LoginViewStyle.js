@@ -8,7 +8,7 @@ export default getStyle = function(){
       flex: 1,
       flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'space-around'
+      justifyContent: 'space-around',
     },
 
     LoginLogo: {

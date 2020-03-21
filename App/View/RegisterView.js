@@ -144,6 +144,7 @@ class RegisterView extends React.Component{
             {/*密码*/}
 
             <Input
+              secureTextEntry={true}
               placeholder='密码'
               leftIcon={
                 <FontAwesome
@@ -177,6 +178,7 @@ class RegisterView extends React.Component{
             {/*密码确认*/}
 
             <Input
+              secureTextEntry={true}
               placeholder='确认密码'
               leftIcon={
                 <FontAwesome
